@@ -1,0 +1,11 @@
+---
+
+- name: K8S | Deploy Multi Master | Preparando o ambiente
+  hosts: k8s
+  roles:
+    - role_pre-setup
+
+- name: K8S | Deploy Multi Master | Provisionando HAPROXY
+  hosts: haproxy
+  roles:
+    - role_haproxy

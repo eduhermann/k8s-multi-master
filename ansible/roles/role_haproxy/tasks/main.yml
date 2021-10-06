@@ -1,0 +1,17 @@
+---
+
+- name: K8S | Provisionando HAPROXY | Instalando HAPROXY
+  apt:
+    name:
+      - haproxy
+    state: latest
+
+- name: K8S | Provisionando HAPROXY | Configurando HAPROXY
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - "K8S | Provisionando HAPROXY | Reiniciando HAPROXY"

@@ -1,0 +1,5 @@
+K8S_Master_Port: '6443'
+
+K8S_Node_Master_01: '192.168.0.71'
+K8S_Node_Master_02: '192.168.0.72'
+K8S_Node_Master_03: '192.168.0.73'

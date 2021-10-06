@@ -1,0 +1,8 @@
+---
+
+- name: K8S | Provisionando HAPROXY | Reiniciando HAPROXY
+  systemd:
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+    name: haproxy

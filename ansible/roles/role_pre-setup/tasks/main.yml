@@ -1,0 +1,15 @@
+---
+
+- name: K8S | Preparando o ambiente | Desabilitando SWAP
+  shell: swapoff -a
+
+- name: K8S | Preparando o ambiente | Removendo SWAP no FSTAB
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+
+- name: K8S | Preparando o ambiente | Configurando arquivo hosts
+  copy:
+    src: hosts
+    dest: /etc/hosts
