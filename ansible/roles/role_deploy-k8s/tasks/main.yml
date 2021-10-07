@@ -1,5 +1,9 @@
 ---
 
+- name: K8S | Provisionando K8S | Test Internet Access
+  uri:
+    url: "https://google.com"
+
 - name: K8S | Provisionando K8S | Instalando dependências
   apt:
     name: "{{ K8S_depends_pkg }}"

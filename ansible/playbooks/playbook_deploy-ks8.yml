@@ -6,11 +6,14 @@
     - role_pre-setup
 
 - name: K8S | Deploy Multi Master | Provisionando HAPROXY
+  gather_facts: False
   hosts: haproxy
   roles:
     - role_haproxy
 
 - name: K8S | Deploy Multi Master | Provisionando K8S
+  gather_facts: False
+  serial: 1
   hosts:
     - masters
     - workers
@@ -18,11 +21,13 @@
     - role_deploy-k8s
 
 - name: K8S | Deploy Multi Master | Init Cluster K8S
+  gather_facts: False
   hosts: masters
   roles:
     - role_init-k8s
 
 - name: K8S | Deploy Multi Master | Add Workers K8S
+  gather_facts: False
   hosts: workers
   roles:
     - role_workers-k8s
