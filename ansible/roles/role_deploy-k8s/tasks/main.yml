@@ -1,9 +1,5 @@
 ---
 
-- name: K8S | Provisionando K8S | Test Internet Access
-  uri:
-    url: "https://google.com"
-
 - name: K8S | Provisionando K8S | Instalando dependências
   apt:
     name: "{{ K8S_depends_pkg }}"
@@ -11,6 +7,10 @@
 
 - name: K8S | Provisionando K8S | Instalando Docker
   shell: curl -fsSL https://get.docker.com | sh
+  register: result
+  retries: 3
+  delay: 5
+  until: result is not failed
   
 - name: K8S | Provisionando K8S | Configurando Cgroup Docker
   copy:
@@ -27,6 +27,10 @@
 
 - name: K8S | Provisionando K8S | Instalando kubectl
   shell: curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+  register: result
+  retries: 3
+  delay: 5
+  until: result is not failed
 
 - name: K8S | Provisionando K8S | Instalando kubectl
   copy:
@@ -49,6 +53,10 @@
 - name: K8S | Provisionando K8S | Instalando kubelet, kubeadm, kubectl
   apt:
     name: "{{ K8S_pkg }}"
+  register: result
+  retries: 3
+  delay: 5
+  until: result is not failed
 
 - name: K8S | Provisionando K8S | APT mark hold
   shell: apt-mark hold kubelet kubeadm kubectl

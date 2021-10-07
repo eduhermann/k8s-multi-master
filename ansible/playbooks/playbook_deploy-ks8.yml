@@ -13,7 +13,7 @@
 
 - name: K8S | Deploy Multi Master | Provisionando K8S
   gather_facts: False
-  serial: 1
+  serial: 3
   hosts:
     - masters
     - workers
