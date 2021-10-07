@@ -37,4 +37,8 @@ O projeto foi estruturado com a utilização de Ansible para a automatização d
 
 Navegue entre as pastas do projeto e verifique os README disponível em cada para provisionar o projeto.
 
+### Agradecimentos
+
+Agradecimentos ao pessoal da [LinuxTips](https://www.linuxtips.io/) pelo conteúdo, especificamente pelo conteúdo do curso de [Kubernetes](https://www.linuxtips.io/products/descomplicando-o-kubernetes)
+
 **Enjoy!**
