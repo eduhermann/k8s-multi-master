@@ -1,0 +1,21 @@
+---
+
+- name: K8S | Init Cluster K8S | Init Cluster Master 01
+  shell: kubeadm init --control-plane-endpoint "{{ K8S_HAProxy }}:{{ K8S_Master_Port }}" --upload-certs
+
+- name: K8S | Init Cluster K8S | Criando diretório control-plane
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
+
+- name: K8S | Init Cluster K8S | Copiando informações do cluster
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: $HOME/.kube/config
+    remote_src: yes
+    owner: root
+    group: root
+
+- name: K8S | Init Cluster K8S | Iniciando Pod Network
+  shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"

@@ -1,0 +1,8 @@
+---
+
+- name: K8S | Provisionando K8S | Reiniciando Docker
+  systemd:
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+    name: docker

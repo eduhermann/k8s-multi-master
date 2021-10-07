@@ -1,0 +1,41 @@
+---
+
+- name: K8S | Init Cluster K8S | Get join
+  shell: kubeadm token create --print-join-command
+  register: kubeadm_command_join
+  when: ansible_hostname == "k8s-master-01"
+
+- name: K8S | Init Cluster K8S | Get cert
+  shell: kubeadm init phase upload-certs --upload-certs | tail -1
+  register: kubeadm_certs_join
+  when: ansible_hostname == "k8s-master-01"
+
+- name: K8S | Init Cluster K8S | Comando join Master
+  set_fact:
+    command_join_cluster: "{{ kubeadm_command_join.stdout }} --control-plane --certificate-key {{ kubeadm_certs_join.stdout }}"
+  when: ansible_hostname == "k8s-master-01"
+
+- name: K8S | Init Cluster K8S | Comando join Worker
+  set_fact:
+    command_join_worker: "{{ kubeadm_command_join.stdout }}"
+  when: ansible_hostname == "k8s-master-01"
+
+- name: K8S | Init Cluster K8S | Init Cluster Master 02 e 03
+  shell: "{{ hostvars['192.168.0.71'].command_join_cluster }}"
+  when: ansible_hostname == "k8s-master-02" or ansible_hostname == "k8s-master-03"
+
+- name: K8S | Init Cluster K8S | Criando diretório control-plane
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
+  when: ansible_hostname == "k8s-master-02" or ansible_hostname == "k8s-master-03"
+
+- name: K8S | Init Cluster K8S | Copiando informações do cluster
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: $HOME/.kube/config
+    remote_src: yes
+    owner: root
+    group: root
+  when: ansible_hostname == "k8s-master-02" or ansible_hostname == "k8s-master-03"

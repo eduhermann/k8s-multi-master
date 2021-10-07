@@ -10,3 +10,9 @@
 
 - role_deploy-k8s
     * Destinada a instalação e configuração de recursos iniciais para a utilização do Kubernetes.
+
+- role_init-k8s
+    * Inicialização dos nodes Masters K8S.
+
+- role_workers-k8s
+    * Adicionando nodes Workers ao cluster K8S.

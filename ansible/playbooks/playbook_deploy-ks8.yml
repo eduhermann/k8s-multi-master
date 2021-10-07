@@ -9,3 +9,20 @@
   hosts: haproxy
   roles:
     - role_haproxy
+
+- name: K8S | Deploy Multi Master | Provisionando K8S
+  hosts:
+    - masters
+    - workers
+  roles:
+    - role_deploy-k8s
+
+- name: K8S | Deploy Multi Master | Init Cluster K8S
+  hosts: masters
+  roles:
+    - role_init-k8s
+
+- name: K8S | Deploy Multi Master | Add Workers K8S
+  hosts: workers
+  roles:
+    - role_workers-k8s

@@ -1,0 +1,50 @@
+---
+
+- name: K8S | Provisionando K8S | Instalando dependências
+  apt:
+    name: "{{ K8S_depends_pkg }}"
+    state: latest
+
+- name: K8S | Provisionando K8S | Instalando Docker
+  shell: curl -fsSL https://get.docker.com | sh
+  
+- name: K8S | Provisionando K8S | Configurando Cgroup Docker
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+
+- name: K8S | Provisionando K8S | Configurando Systemd Docker
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    recurse: yes
+  notify: 
+    - "K8S | Provisionando K8S | Reiniciando Docker"
+
+- name: K8S | Provisionando K8S | Instalando kubectl
+  shell: curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+
+- name: K8S | Provisionando K8S | Instalando kubectl
+  copy:
+    src: /root/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: '0755'
+    remote_src: true
+
+- name: K8S | Provisionando K8S | Key repositório GCP
+  shell: curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+- name: K8S | Provisionando K8S | Ativando repositório K8S
+  copy:
+    src: kubernetes.list
+    dest: /etc/apt/sources.list.d/kubernetes.list
+
+- name: K8S | Provisionando K8S | Atualizando cache APT
+  apt: update_cache=yes
+
+- name: K8S | Provisionando K8S | Instalando kubelet, kubeadm, kubectl
+  apt:
+    name: "{{ K8S_pkg }}"
+
+- name: K8S | Provisionando K8S | APT mark hold
+  shell: apt-mark hold kubelet kubeadm kubectl
