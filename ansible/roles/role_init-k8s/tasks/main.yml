@@ -3,4 +3,4 @@
 - include: initMasterNode01.yml
   when: ansible_hostname == "k8s-master-01"
 
-- include: initMasterNodes02-03.yml
+- include: initMasterNodes.yml
